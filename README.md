@@ -21,6 +21,18 @@ python manage.py runserver
 
 The API is available at `http://127.0.0.1:8000/api/health/` and returns `{"status":"ok"}`.
 
+## Products API
+
+Products are available at `/api/products/`:
+
+- `GET /api/products/` lists products, with 20 results per page. Use `?page=2` to
+  request another page.
+- `POST /api/products/` creates a product.
+- `GET /api/products/{id}/` retrieves a product.
+- `PATCH /api/products/{id}/` updates a product.
+- `DELETE /api/products/{id}/` deletes a product unless it has order items, in
+  which case it is deactivated to preserve order history.
+
 ## PostgreSQL
 
 PostgreSQL is the configured database. Set these PowerShell environment variables before running migrations:
