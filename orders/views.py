@@ -10,6 +10,13 @@ from .services import OrderPlacementError, place_order
 
 
 class OrderListCreateView(APIView):
+	def get(self, request):
+		orders = Order.objects.prefetch_related('items__product').order_by(
+			'-created_at',
+			'-pk',
+		)
+		return Response(OrderSerializer(orders, many=True).data)
+
 	def post(self, request):
 		input_serializer = OrderCreateSerializer(data=request.data)
 		input_serializer.is_valid(raise_exception=True)

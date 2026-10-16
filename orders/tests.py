@@ -58,6 +58,24 @@ class OrderAPITests(APITestCase):
 			'12.50',
 		)
 
+	def test_list_orders(self):
+		created = self.client.post(
+			reverse('orders:order-list-create'),
+			{
+				'items': [
+					{'product_id': self.first_product.pk, 'quantity': 1},
+				],
+			},
+			format='json',
+		)
+
+		response = self.client.get(reverse('orders:order-list-create'))
+
+		self.assertEqual(response.status_code, status.HTTP_200_OK)
+		self.assertEqual(len(response.data), 1)
+		self.assertEqual(response.data[0]['id'], created.data['id'])
+		self.assertEqual(response.data[0]['items'][0]['product_id'], self.first_product.pk)
+
 	def test_insufficient_stock_rejects_order_without_changing_any_stock(self):
 		response = self.client.post(
 			reverse('orders:order-list-create'),
